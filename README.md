@@ -112,6 +112,8 @@ Version 1 of the Flask App takes a single tweet and evaluates it. If the tweet i
 
 ![time series analysis](./media/time_series.png)
 
+Once we found a model that we could successfully classify whether or not a tweet is relevant to an emergency, we needed a way to determine if we needed to alert our audience or not. This brought us to taking our newly predicted DataFrame of tweets and perform some time series analysis on it. We grouped our data by hour and took an average of total tweets & total relevant tweets by hour. We took those averages and calculated the difference between the number of relevant tweets in that hour compared to the previous hour. If there is a significant increase of relevant tweets in the current hour, we will alert our users of a significant emergency so that they can take action. Since we only have approximately 2 weeks of data in light of the recent fires we manually determined the spikes in activity, but ideally with enough data would like to created another model to classify this activity for us. 
+
 # Conclusion / Next Steps
 **In our time frame we achieved our goal and were able to work on stretch goals.**
 
