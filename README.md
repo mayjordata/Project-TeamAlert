@@ -12,10 +12,17 @@ When this project was assigned, there were several wildfires spreading acorss Ca
 # Data
 Our group used several different methods to scrape tweets. To scrape from Twitter, we used the Tweepy Library. However, this API only let us scrape tweets within the last 7 days. Through research we also found that there is a python library called GetOldTweets3 that allows us to scrape tweets older than 7 days. 
 
-**Scrapes from Tweepy:**
+## Scrapes from Tweepy:
 We were able to scrape most of our targeted data from Tweepy due to the timing of this project. There were about 5 significant fires that were occuring across California while working on this project. We filtered the scrape of these tweets by searchign for a specific term (e.g. "maria fire"), specific coordinates, and the range of miles outside those coordinates.
 
-**Scrapes from GetOldTweets3**
+### API Instructions:
+
+It requires to create a Twitter developer account and create an app to obtain consumer keys and access tokens.
+For further information: https://developer.twitter.com/en.html
+
+Please follow the instructions on Twitter_Data_Collection notebook in this repository to generate a json file with a blank dictionary to input relevant information. Find twitter_cred.json file and type consumer key, consumer secret, access key, access secret.
+
+## Scrapes from GetOldTweets3
 We used this library to scrape tweets before the current fire season. The purpose of these tweets were to (1) add to our Non-related emergency tweet class and (2) add to the language that would be used when fires are not occuring in California. This is useful for our model to identify the language, terms, and sentiment used when classifying whether a tweet is fire-emergency related or not.
 
 After scraping from the GetOldTweets3 library, we feel that there is some sort of archive. When we scraped tweets from a specific time period, only a fraction of tweets we expected were returned.
@@ -56,6 +63,7 @@ After removing necessary stop words, we did performed an n-gram analysis to exam
 
 ## Sentiment Analysis
 This chart of overall sentiment analysis shows that the spread of fire related tweets is more negative compared to the spread of non-emergency tweets. Less than half of the fire related tweets compouted a positive sentiment score.
+
 ![overall compound score of tweets](./media/compound_sentiment.png)
 
 ## Other Notes
@@ -105,14 +113,26 @@ We wanted to hone in on the sensitivity of our model. This is important to us be
 
 
 # Flask App
-Video demos of both versions of our web application is available in the media folder in our repo.
+
+Our major goal is to create a highly sensitive and robust fire alert system. We focused on minimizing false negatives of our best model so that our system would be reliable by identifying all possible emergencies without missing a single one. 
+
 ## ALERT.LY 1.0
-Version 1 of the Flask App takes a single tweet and evaluates it. If the tweet is classified as a
+
+We created a tool to test our model’s accuracy more efficiently. Alertly 1.0 is a responsive web application utilizes TFIDF vectorizer and Random Forest model, Flask framework and it is hosted by PythonAnywhere platform. It takes a tweet text as input and displays the outcome of language processing classification.
+
+Please check the live demo video in media folder in this repository.
+
+
 ## ALERT.LY 2.0
+
+We used the moving average of our time series data to capture short-term (hourly) fluctuations. We simply calculated the difference between hourly related tweets and past 2 hours average. We created a secondary application which iterates through the time series data and displays alert when there is a significant increase in number of relevant tweets. It evaluates the trend based on a selected threshold value. As soon as it captures a spike, it pops up the alert by turning the twitter logo to red color and shows the time of the emergency.
+
+Please check the live demo video Alertly 2.0 in media folder in this repository.
 
 ![time series analysis](./media/time_series.png)
 
-Once we found a model that we could successfully classify whether or not a tweet is relevant to an emergency, we needed a way to determine if we needed to alert our audience or not. This brought us to taking our newly predicted DataFrame of tweets and perform some time series analysis on it. We grouped our data by hour and took an average of total tweets & total relevant tweets by hour. We took those averages and calculated the difference between the number of relevant tweets in that hour compared to the previous hour. If there is a significant increase of relevant tweets in the current hour, we will alert our users of a significant emergency so that they can take action. Since we only have approximately 2 weeks of data in light of the recent fires we manually determined the spikes in activity, but ideally with enough data would like to created another model to classify this activity for us. 
+Once we found a model that we could successfully classify whether or not a tweet is relevant to an emergency, we needed a way to determine if we needed to alert our audience or not. This brought us to taking our newly predicted DataFrame of tweets and perform some time series analysis on it. We grouped our data by hour and took an average of total tweets & total relevant tweets by hour. We took those averages and calculated the difference between the number of relevant tweets in that hour compared to the previous hour. If there is a significant increase of relevant tweets in the current hour, we will alert our users of a significant emergency so that they can take action. Since we only have approximately 2 weeks of data in light of the recent fires we manually determined the spikes in activity, but ideally with enough data would like to created another model to classify this activity for us.
+
 
 # Conclusion / Next Steps
 **In our time frame we achieved our goal and were able to work on stretch goals.**
@@ -123,6 +143,6 @@ We were able to create a model that could classify tweets on wheather a tweet is
 - implementing/investigating data from other natural disasters in order to make the application more diverse
 - Futher improve/optimzie Type II Errors
 - Create a model to detect anomalies of emergency related tweets
-- implement a continuous live scraper to monitor tweets
-- Final Mobile Application fro ALERT.LY
+- Integrate live streamming Twitter API with Alert.ly web app for real time alerts
+- Final Mobile Application from ALERT.LY
 
